@@ -311,11 +311,98 @@ void DrawGame(void)
                 // Draw each square of the grid
                 if (grid[i][j] == EMPTY)
                 {
+                    DrawLine(offset.x, offset.y, offset.x + SQUARE_SIZE, offset.y, LIGHTGRAY);
+                    DrawLine(offset.x, offset.y, offset.x, offset.y + SQUARE_SIZE, LIGHTGRAY);
+                    DrawLine(offset.x + SQUARE_SIZE, offset.y, offset.x + SQUARE_SIZE, offset.y + SQUARE_SIZE, LIGHTGRAY);
+                    DrawLine(offset.x, offset.y + SQUARE_SIZE, offset.x + SQUARE_SIZE, offset.y + SQUARE_SIZE, LIGHTGRAY);
+                    offset.x += SQUARE_SIZE;
+                }
+                else if (grid[i][j] == FULL)
+                {
+                    DrawRectangle(offset.x, offset.y, SQUARE_SIZE, SQUARE_SIZE, GRAY);
+                    offset.x += SQUARE_SIZE;
+                }
+                else if (grid[i][j] == MOVING)
+                {
+                    DrawRectangle(offset.x, offset.y, SQUARE_SIZE, SQUARE_SIZE, DARKGRAY);
+                    offset.x += SQUARE_SIZE;
+                }   
+                else if (grid[i][j] == BLOCK)
+                {
+                    DrawRectangle(offset.x, offset.y, SQUARE_SIZE, SQUARE_SIZE, LIGHTGRAY);
+                    offset.x += SQUARE_SIZE;
+                }
+                else if (grid[i][j] == FADING)
+                {
+                    DrawRectangle(offset.x, offset.y, SQUARE_SIZE, SQUARE_SIZE, fadingColor);
+                    offset.x += SQUARE_SIZE;
+                }
+            }
+
+            offset.x = controller;
+            offset.y += SQUARE_SIZE;
+        }
+
+        // Draw incoming piece (hardcoded)
+        offset.x = 500;
+        offset.y = 45;
+
+        int controler = offset.x;
+
+        for (int j = 0; j < 4; j++)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if (incomingPiece[i][j] == EMPTY)
+                {
+                    DrawLine(offset.x, offset.y, offset.x + SQUARE_SIZE, offset.y, LIGHTGRAY);
+                    DrawLine(offset.x, offset.y, offset.x, offset.y + SQUARE_SIZE, LIGHTGRAY);
+                    DrawLine(offset.x + SQUARE_SIZE, offset.y, offset.x + SQUARE_SIZE, offset.y + SQUARE_SIZE, LIGHTGRAY);
+                    DrawLine(offset.x, offset.y + SQUARE_SIZE, offset.x + SQUARE_SIZE, offset.y + SQUARE_SIZE, LIGHTGRAY);
+                    offset.x += SQUARE_SIZE;
+                }
+                else if (incomingPiece[i][j] == MOVING)
+                {
+                    DrawRectangle(offset.x, offset.y, SQUARE_SIZE, SQUARE_SIZE, GRAY);
+                    offset.x += SQUARE_SIZE;
+                }
+            }
+
+            offset.x = contoler;
+            offset.y += SQUARE_SIZE;
+        }
+
+        DrawText("INCOMING:", offset.x, offset.y - 100, 10, GRAY);
+        DrawText(TextFormat("Lines:      %041", lines), offset.x, offset.y + 20, 10, GRAY);
+
+        if (pause) DrawText("GAME PAUSED", screenWidth/2 - MeasureText("GAME PAUSED", 40)/2, screenHeight/2 - 40, 40, GRAY);
+    }
+    else DrawText("PRESS [ENTER] TO PLAY AGAIN", GetScreenWidth()/2 - MeasureText("PRESS [ENTER] TO PLAY AGAIN", 20)/2,
+GetScreenHeight()/2 - 50, 20, GRAY);
+
+    EndDrawing();
+}
 
 
+// Unload game variables
+void UnloadGame(void)
+{
+    // TODO: Unload all dynamic loaded data (textures, sounds, models...)
+}
 
 
+// Update and Draw (one frame)
+{ 
+    UpdateGame();
+    DrawGame();
+}
 
+
+//---------------------------------------------------------------
+// Additional Module Functions
+//---------------------------------------------------------------
+static bool CreatePiece()
+{
 
 
 
